@@ -7,16 +7,6 @@ var schedule = require('node-schedule')
 var omx = require('node-mplayer')
 
 
-//parameters handling
-var media = process.argv[2];
-
-if ( media ) {
-	console.log('flash drive name: ' + media);
-	// process.emit("SIGINT");
-	// process.exit(0);
-}
-
-
 //clean up
 process.on('SIGHUP',  function(){ console.log('\nCLOSING: [SIGHUP]'); process.emit("SIGINT"); })
 process.on('SIGINT',  function(){
@@ -42,6 +32,175 @@ function cleanPID(pid) {
 		}
 	}
 }
+
+
+var assets;
+assets = fs.readdirSync('./assets')
+
+// fs.readdir('./assets', function(err, items) {
+//
+//     for (var i=0; i<items.length; i++) {
+// 			assets.push(items[i])
+//     }
+//
+// 		for (var i=0; i<assets.length; i++) {
+// 			console.log(assets[i]);
+// 			fs.stat(assets[i], function(err, stats) {
+// 				console.log(stats);
+// 			});
+// 		}
+//
+// });
+
+
+console.log(Date.now())
+var buttons_pressed = {
+	"button0":0,
+	"button1":0,
+	"button2":0
+}
+
+
+
+function buttonPressed(button, now) {
+	var button = button || false
+	if (! button ) return false
+	var now = now || Date.now()
+	if ( now - buttons_pressed["button1"] > 1000 )
+		{
+			buttons_pressed[button] = now
+			console.log(button + ": pressed")
+			if (button == "button1") {
+				console.log("changeButton")
+				changeAsset()
+			}
+			else if (button == "button0") {
+				console.log("volumeDownButton")
+				volume("down")
+			}
+			else if (button == "button2") {
+				console.log("volumeUpButton")
+				volume("up")
+			}
+		}
+
+}
+
+function volume(dir) {
+	var dir = dir || false
+
+	if ( ! dir ) return false
+
+	if( ! player["player"] || ! player["player"].open == true ) return false
+
+	else if ( dir == "up" ) player["player"].volUp()
+	else if ( dir == "down" ) player["player"].volDown()
+
+}
+
+var current_asset = 0
+var player = {}
+
+function setupPlayer(asset) {
+
+	var asset = asset
+	if ( asset === false ) return false
+
+	player["player"] = omx('./assets/' + assets[asset])
+	var pid = player["player"].pid
+	pids.push(pid)
+	console.log(player["player"].pid)
+	player["player"].on('close', function(pid) {
+		console.log("playback ended")
+		cleanPID(pid)
+		setupPlayer(current_asset)
+	}.bind(null, pid))
+
+}
+
+function cycleAssets() {
+		current_asset++
+		current_asset = current_asset % assets.length
+		return current_asset
+
+}
+
+function changeAsset() {
+		console.log("changeAsset")
+		var asset = cycleAssets()
+		if( player["player"] && player["player"].open == true ) player["player"].quit()
+		else setupPlayer(asset)
+
+}
+
+changeAsset()
+
+
+
+
+
+function py() {
+	var py = spawner.spawn("bash", new Array("-c", "./buttons.py"), {detached: true})
+	var decoder = new StringDecoder('utf-8')
+
+	pids.push(py["pid"])
+
+	py.stdout.on('data', (data) => {
+	  var string = decoder.write(data)
+		string=string.split(/\r?\n/)
+		for( var i = 0; i < string.length; i++) {
+			if ( string[i].length > 0 && string[i].match(/^system:connected/) ) {
+				console.log("reading buttons")
+			}
+			else if ( string[i].length > 0 && string[i].match(/^system:buttons:/) ) {
+				console.log("buttons connected: " + string[i].replace(/^system:buttons:/, ""))
+			}
+			else if ( string[i].length > 0 && string[i].match(/^buttons:/) ) {
+				// console.log(string[i])
+				var combination = string[i].replace(/^buttons:/, "").split(":")
+				var button0 = combination[0]
+				var button1 = combination[1]
+				var button2 = combination[2]
+				var now = Date.now()
+				console.log("__________________")
+				if ( button0 == 1 ) buttonPressed("button0", now)
+				if ( button1 == 1 ) buttonPressed("button1", now)
+				if ( button2 == 1 ) buttonPressed("button2", now)
+
+			}
+		}
+	});
+	//not final state!
+	py.stderr.on('data', (data) => {
+	  // console.log(`stderr: ${data}`)
+	  // var string = decoder.write(data)
+		// string = string.replace(/\r?\n$/, "")
+		// if ( string.match(/^ls: cannot access/)) console.log(search + " not found")
+		// return false
+	});
+	py.on('close', function (pid, code) {
+		cleanPID(pid)
+		if (code == 0) {
+			for ( i in ttys ) {
+				if ( ! ttys[i]["catstarted"] ) {
+					console.log(ttys[i])
+					cat(ttys[i])
+				}
+				else "nothing to cat"
+			}
+		}
+		else {
+			console.log(' not to be found')
+		}
+	}.bind(null, py["pid"]));
+	return py;
+}
+
+py();
+
+
+
+
 
 //global vars
 var date
@@ -111,76 +270,6 @@ function numberPad(number, padding) {
 }
 
 
-function openDay(daynum) {
-
-	obj = JSON.parse(fs.readFileSync('schedule.json', 'utf8'));
-	sch = obj.schedule
-	date = new Date()
-
-	var daynum = parseInt(daynum)
-	var day = sch[daynum%7]
-
-	var ohour = day.ohour
-	var chour = day.chour
-	if ( ohour === "" || chour === "" ) {
-		return openDay(daynum+1)
-	}
-
-	var playtimes = day.playtimes
-
-	if ( date.getDay() == daynum ) {
-
-		if ( date.getHours() < ohour ) {
-			return new Date( date.getFullYear(), date.getMonth(), date.getDate(), ohour, playtimes[0], 0, 0)
-		}
-
-		var slot = closestSlot(playtimes)
-
-		if ( date.getHours() > chour || ( slot == "plushour" && date.getHours()+1 > chour ) ) {
-			return openDay(daynum+1)
-		}
-
-		else if (  slot == "plushour" && date.getHours()+1 <= chour && date.getHours()+1 < 24  ) {
-			return new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()+1, playtimes[0], 0, 0)
-		}
-
-		else {
-			return new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), slot, 0, 0)
-		}
-	}
-
-	else {
-		console.log( "next day:\t" + sch[(daynum%7)].name )
-		var nextday = new Date( date.getFullYear(), date.getMonth(), date.getDate(), ohour, playtimes[0], 0)
-		var milis = Math.abs( (daynum) - date.getDay() )
-		milis *= (24*60*60*1000)
-		var utc = Date.parse(nextday)
-		utc = utc + milis
-		var d = new Date()
-		d.setTime(utc)
-		return d
-	}
-	return false
-}
-
-function closestSlot(array) {
-	var times = array.concat() || false
-	if (times == false) return false
-	var slot = times.shift()
-	date = new Date()
-
-	if ( slot > date.getMinutes() ) {
-		return slot
-		}
-
-	else if ( times.length > 0 ) {
-		return closestSlot(times)
-		}
-	else {
-		return "plushour"
-	}
-}
-
 function setupJob(){
 	console.log("------------------  n e w  s e t u p  ------------------")
 	obj = JSON.parse(fs.readFileSync('schedule.json', 'utf8'));
@@ -209,6 +298,3 @@ function setupJob(){
 		if ( queueRunning === false ) queueHandler()
 	});
 }
-
-//first job setup
-setupJob()

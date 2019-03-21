@@ -4,7 +4,7 @@ var StringDecoder = require('string_decoder').StringDecoder
 var events = require('events')
 var fs = require('fs')
 var schedule = require('node-schedule')
-var omx = require('node-omxplayer')
+var omx = require('node-mplayer')
 
 
 //clean up
@@ -117,7 +117,11 @@ function setupPlayer(asset) {
 		cleanPID(pid)
 		setupPlayer(current_asset)
 	}.bind(null, pid))
+	player["player"].stdout.on('data', (data) => {
+		console.log("out")
+		console.log(data)
 
+	});
 }
 
 function cycleAssets() {

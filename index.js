@@ -86,6 +86,8 @@ function buttonPressed(button, now) {
 
 }
 
+var volume = 15
+
 function volume(dir) {
 	var dir = dir || false
 

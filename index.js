@@ -97,7 +97,7 @@ function volume(dir) {
 
 	else if ( dir == "up" ) player["player"].volUp()
 	else if ( dir == "down" ) player["player"].volDown()
-
+	console.log(player["player"].volume)
 }
 
 var current_asset = 0

@@ -66,7 +66,7 @@ function buttonPressed(button, now) {
 	var button = button || false
 	if (! button ) return false
 	var now = now || Date.now()
-	if ( now - buttons_pressed["button1"] > 1000 )
+	if ( now - buttons_pressed["button1"] > 1000 && now - buttons_pressed[button] > 500 )
 		{
 			buttons_pressed[button] = now
 			console.log(button + ": pressed")

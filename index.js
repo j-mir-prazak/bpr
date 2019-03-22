@@ -142,7 +142,7 @@ function setupPlayer(asset) {
 
 	player["player"].on('input', function() {
 		console.log("input")
-	}
+	})
 	player["player"].on('close', function(pid) {
 
 		console.log("playback ended")

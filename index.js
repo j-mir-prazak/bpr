@@ -112,7 +112,7 @@ function setupPlayer(asset) {
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)
-	
+
 	if ( player["player"].process ) {
 
 		player["player"].process.stdout.on('data', (data) => {
@@ -140,6 +140,9 @@ function setupPlayer(asset) {
 
 	}
 
+	player["player"].on('input', function() {
+		console.log("input")
+	}
 	player["player"].on('close', function(pid) {
 
 		console.log("playback ended")

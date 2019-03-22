@@ -112,6 +112,33 @@ function setupPlayer(asset) {
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)
+	
+	if ( player["player"].process ) {
+
+		player["player"].process.stdout.on('data', (data) => {
+			var decoder = new StringDecoder('utf-8')
+			var string = decoder.write(data)
+			string=string.split(/\r?\n/)
+			for( var i = 0; i < string.length; i++) {
+				console.log(string[i])
+				if ( string[i].match(/Current volume:/ )) {
+					var vol = string[i].replace(/Current volume: (.*)dB/i,"$1")
+					vol = parseFloat(vol)
+					console.log(vol)
+				}
+			}
+		});
+
+		player["player"].process.stderr.on('data', (data) => {
+			var decoder = new StringDecoder('utf-8')
+			var string = decoder.write(data)
+			string=string.split(/\r?\n/)
+			for( var i = 0; i < string.length; i++) {
+				console.log(string[i])
+			}
+		});
+
+	}
 
 	player["player"].on('close', function(pid) {
 
@@ -119,34 +146,6 @@ function setupPlayer(asset) {
 		cleanPID(pid)
 		setupPlayer(current_asset)
 	}.bind(null, pid))
-
-	if ( player["player"].process ) {
-
-			player["player"].process.stdout.on('data', (data) => {
-				console.log(data)
-				var decoder = new StringDecoder('utf-8')
-				var string = decoder.write(data)
-				string=string.split(/\r?\n/)
-				for( var i = 0; i < string.length; i++) {
-					console.log(string[i])
-					if ( string[i].match(/Current volume:/ )) {
-							var vol = string[i].replace(/Current volume: (.*)dB/i,"$1")
-							vol = parseFloat(vol)
-							console.log(vol)
-					}
-				}
-			});
-
-			player["player"].process.stderr.on('data', (data) => {
-				var decoder = new StringDecoder('utf-8')
-				var string = decoder.write(data)
-				string=string.split(/\r?\n/)
-				for( var i = 0; i < string.length; i++) {
-					console.log(string[i])
-					}
-				});
-
-	}
 
 }
 

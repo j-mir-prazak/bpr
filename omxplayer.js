@@ -40,5 +40,4 @@ omxProcess.stderr.on('data', (data) => {
 		// 	vol = parseFloat(vol)
 		// 	console.log(vol)
 		}
-	}
 });

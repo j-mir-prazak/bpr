@@ -108,7 +108,7 @@ function setupPlayer(asset) {
 	var asset = asset
 	if ( asset === false ) return false
 
-	player["player"] = omx('./assets/' + assets[asset], local, false, current_volume)
+	player["player"] = omx('./assets/' + assets[asset], "local", false, current_volume)
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)

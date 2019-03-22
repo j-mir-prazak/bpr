@@ -123,6 +123,7 @@ function setupPlayer(asset) {
 	if ( player["player"].process ) {
 
 			player["player"].process.stdout.on('data', (data) => {
+				console.log(data)
 				var decoder = new StringDecoder('utf-8')
 				var string = decoder.write(data)
 				string=string.split(/\r?\n/)

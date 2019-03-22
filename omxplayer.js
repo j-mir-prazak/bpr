@@ -13,7 +13,7 @@ let args = new Array(
 
 console.log(args)
 
-var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false, stdio: [ 'pipe', 'pipe', 'pipe' ]});
+var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false, stdio: 'inherit' });
 
 omxProcess.stdout.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')

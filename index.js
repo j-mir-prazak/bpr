@@ -120,7 +120,7 @@ function setupPlayer(asset) {
 			var string = decoder.write(data)
 			string=string.split(/\r?\n/)
 			for( var i = 0; i < string.length; i++) {
-				if ( string[i].match(/Current volume:/) ) {
+				if ( string[i].match(/Current volume/) ) {
 					var vol = string[i].replace(/Current volume: (.*)dB/i,"$1")
 					vol = parseFloat(vol)
 					console.log(vol)
@@ -192,7 +192,7 @@ function py() {
 				var button1 = combination[1]
 				var button2 = combination[2]
 				var now = Date.now()
-				console.log("__________________")
+				// console.log("__________________")
 				if ( button0 == 1 ) buttonPressed("button0", now)
 				if ( button1 == 1 ) buttonPressed("button1", now)
 				if ( button2 == 1 ) buttonPressed("button2", now)

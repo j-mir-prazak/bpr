@@ -123,7 +123,7 @@ function setupPlayer(asset) {
 				var string = decoder.write(data)
 				string=string.split(/\r?\n/)
 				for( var i = 0; i < string.length; i++) {
-					if ( ! string[i].match(/A:.*V:.*/) ) console.log(string[i])
+					console.log(string[i])
 					}
 				});
 			player["player"].process.stderr.on('data', (data) => {
@@ -131,7 +131,7 @@ function setupPlayer(asset) {
 				var string = decoder.write(data)
 				string=string.split(/\r?\n/)
 				for( var i = 0; i < string.length; i++) {
-					if ( ! string[i].match(/A:.*V:.*/) ) console.log(string[i])
+					console.log(string[i])
 					}
 				});
 	}

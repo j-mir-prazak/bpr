@@ -30,16 +30,8 @@ function looping {
 	  echo "-----------------------------"
 	  echo ""
 	  echo ""
-		media=$(ls /media/pi | tail -n -1)
-		PROC2=""
-	  if [ "$media" != "" ]
-		then
-			echo "Sourcing flash drive."
-			node index.js "$media" &
-		else
-			echo "Sourcing assets."
-			node index.js &
-		fi
+		echo "Sourcing assets."
+		node index.js &
 		PROC2=$!
 		trap 'kill -SIGINT $PROC2; trap SIGINT; break' SIGINT
 		trap 'kill -SIGINT $PROC2; trap SIGTERM; break' SIGTERM

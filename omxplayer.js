@@ -27,8 +27,8 @@ omxProcess.stdout.on('data', (data) => {
 		// 	vol = parseFloat(vol)
 		// 	console.log(vol)
 		}
-	}
 });
+
 omxProcess.stderr.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')
 	var string = decoder.write(data)

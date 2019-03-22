@@ -14,7 +14,7 @@ let args = new Array(
 
 console.log(args)
 
-let omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false});
+var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false});
 
 omxProcess.stdout.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')

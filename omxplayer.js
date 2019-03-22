@@ -4,10 +4,16 @@ let StringDecoder = require('string_decoder').StringDecoder
 
 let decoder = new StringDecoder('utf-8')
 
-let args = {
-	"-o", "local", "assets/01 Honey.flac", "<input.pipe"
+let args = new Array(
 
-}
+	"-o",
+	"local",
+	"assets/01 Honey.flac",
+	"<input.pipe"
+)
+
+
+
 let omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: true});
 
 omxProcess.stdout.on('data', (data) => {

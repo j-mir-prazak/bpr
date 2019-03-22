@@ -12,7 +12,7 @@ let args = new Array(
 	"<input.pipe"
 )
 
-
+console.log(args)
 
 let omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: true});
 

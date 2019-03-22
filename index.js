@@ -122,7 +122,7 @@ function setupPlayer(asset) {
 			for( var i = 0; i < string.length; i++) {
 				if ( string[i].match(/Current Volume/) ) {
 					var vol = string[i].replace(/Current Volume: (.*)dB/i,"$1")
-					vol = parseFloat(vol)
+					vol = parseFloat(vol) * 100
 					console.log(vol)
 				}
 			}

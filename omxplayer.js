@@ -6,14 +6,18 @@ var decoder = new StringDecoder('utf-8')
 
 let args = new Array(
 
+	'-i0', '-o0', '-e0',
+	'/usr/bin/omxplayer.bin',
 	"-o",
 	"local",
 	"assets/01 Honey.flac"
+
 )
 
 console.log(args)
 
-var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false, stdio: 'inherit' });
+// var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false, stdio: 'inherit' });
+var omxProcess = spawn('stdbuf', args, {detached: false});
 
 omxProcess.stdout.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')

@@ -140,12 +140,12 @@ function setupPlayer(asset) {
 
 	}
 
-	// player["player"].on('close', function(pid) {
-	//
-	// 	console.log("playback ended")
-	// 	cleanPID(pid)
-	// 	setupPlayer(current_asset)
-	// }.bind(null, pid))
+	player["player"].on('close', function(pid) {
+
+		console.log("playback ended")
+		cleanPID(pid)
+		setupPlayer(current_asset)
+	}.bind(null, pid))
 
 }
 

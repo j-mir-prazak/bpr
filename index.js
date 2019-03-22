@@ -35,7 +35,7 @@ function cleanPID(pid) {
 
 
 var assets;
-assets = fs.readdirSync('./assets')
+assets = fs.readdirSync('assets')
 
 // fs.readdir('./assets', function(err, items) {
 //
@@ -86,7 +86,7 @@ function buttonPressed(button, now) {
 
 }
 
-var current_volume = 0
+var current_volume = -4000
 
 function volume(dir) {
 	var dir = dir || false
@@ -107,7 +107,7 @@ function setupPlayer(asset) {
 	var asset = asset
 	if ( asset === false ) return false
 
-	player["player"] = omx('./assets/' + assets[asset], "local", false, current_volume)
+	player["player"] = omx('assets/' + assets[asset], "local", false, current_volume)
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)

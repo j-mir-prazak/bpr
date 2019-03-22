@@ -97,7 +97,6 @@ function volume(dir) {
 
 	else if ( dir == "up" ) player["player"].volUp()
 	else if ( dir == "down" ) player["player"].volDown()
-	console.log(player["player"].volume)
 }
 
 var current_asset = 0
@@ -124,7 +123,7 @@ function setupPlayer(asset) {
 					var vol = string[i].replace(/Current Volume: (.*)dB/i,"$1")
 					vol = parseFloat(vol) * 100
 					current_volume = vol
-					console.log("Current volume: " + vol)
+					console.log("Current volume: " + current_volume)
 				}
 			}
 		});

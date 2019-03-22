@@ -14,10 +14,11 @@ let args = new Array(
 
 console.log(args)
 
-let omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: true});
+let omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false});
 
 omxProcess.stdout.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')
+	console.log(data)
 	var string = decoder.write(data)
 	string=string.split(/\r?\n/)
 	for( var i = 0; i < string.length; i++) {
@@ -30,6 +31,7 @@ omxProcess.stdout.on('data', (data) => {
 });
 
 omxProcess.stderr.on('data', (data) => {
+	console.log(data)
 	// var decoder = new StringDecoder('utf-8')
 	var string = decoder.write(data)
 	string=string.split(/\r?\n/)

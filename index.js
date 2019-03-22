@@ -128,7 +128,7 @@ function setupPlayer(asset) {
 				string=string.split(/\r?\n/)
 				for( var i = 0; i < string.length; i++) {
 					console.log(string[i])
-					if ( string[i].match(/Current volume:/ ) {
+					if ( string[i].match(/Current volume:/ )) {
 							var vol = string[i].replace(/Current volume: (.*)dB/i,"$1")
 							vol = parseFloat(vol)
 							console.log(vol)

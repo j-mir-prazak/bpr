@@ -117,11 +117,25 @@ function setupPlayer(asset) {
 		cleanPID(pid)
 		setupPlayer(current_asset)
 	}.bind(null, pid))
-	player["player"].stdout.on('data', (data) => {
-		console.log("out")
-		console.log(data)
+	if ( player["player"].process ) {
+			player["player"].process.stdout.on('data', (data) => {
+				var decoder = new StringDecoder('utf-8')
+				var string = decoder.write(data)
+				string=string.split(/\r?\n/)
+				for( var i = 0; i < string.length; i++) {
+					if ( ! string[i].match(/A:.*V:.*/) ) console.log(string[i])
+					}
+				});
+			player["player"].process.stderr.on('data', (data) => {
+				var decoder = new StringDecoder('utf-8')
+				var string = decoder.write(data)
+				string=string.split(/\r?\n/)
+				for( var i = 0; i < string.length; i++) {
+					if ( ! string[i].match(/A:.*V:.*/) ) console.log(string[i])
+					}
+				});
+	}
 
-	});
 }
 
 function cycleAssets() {

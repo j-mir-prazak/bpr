@@ -86,7 +86,7 @@ function buttonPressed(button, now) {
 
 }
 
-var current_volume = 15
+var current_volume = 0
 
 function volume(dir) {
 	var dir = dir || false
@@ -112,20 +112,30 @@ function setupPlayer(asset) {
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)
+
 	player["player"].on('close', function(pid) {
+
 		console.log("playback ended")
 		cleanPID(pid)
 		setupPlayer(current_asset)
 	}.bind(null, pid))
+
 	if ( player["player"].process ) {
+
 			player["player"].process.stdout.on('data', (data) => {
 				var decoder = new StringDecoder('utf-8')
 				var string = decoder.write(data)
 				string=string.split(/\r?\n/)
 				for( var i = 0; i < string.length; i++) {
 					console.log(string[i])
+					if ( string[i].match(/Current volume:/ ) {
+							var vol = string[i].replace(/Current volume: (.*)dB/i,"$1")
+							vol = parseFloat(vol)
+							console.log(vol)
 					}
-				});
+				}
+			});
+
 			player["player"].process.stderr.on('data', (data) => {
 				var decoder = new StringDecoder('utf-8')
 				var string = decoder.write(data)
@@ -134,6 +144,7 @@ function setupPlayer(asset) {
 					console.log(string[i])
 					}
 				});
+
 	}
 
 }

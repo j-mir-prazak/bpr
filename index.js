@@ -120,7 +120,7 @@ function setupPlayer(asset) {
 			var string = decoder.write(data)
 			string=string.split(/\r?\n/)
 			for( var i = 0; i < string.length; i++) {
-				if ( string[i].match(/Current Volume/) ) {
+				if (string[i].length > 0 && string[i].match(/Current Volume/) ) {
 					var vol = string[i].replace(/Current Volume: (.*)dB/i,"$1")
 					vol = parseFloat(vol) * 100
 					current_volume = vol
@@ -134,7 +134,7 @@ function setupPlayer(asset) {
 			var string = decoder.write(data)
 			string=string.split(/\r?\n/)
 			for( var i = 0; i < string.length; i++) {
-				console.log(string[i])
+			 if (string[i].length > 0 )	console.log(string[i])
 			}
 		});
 

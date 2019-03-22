@@ -8,8 +8,7 @@ let args = new Array(
 
 	"-o",
 	"local",
-	"assets/01 Honey.flac",
-	"<input.pipe"
+	"assets/01 Honey.flac"
 )
 
 console.log(args)
@@ -18,7 +17,7 @@ var omxProcess = spawn('/usr/bin/omxplayer.bin', args, {detached: false});
 
 omxProcess.stdout.on('data', (data) => {
 	// var decoder = new StringDecoder('utf-8')
-	console.log(data)
+	console.log(data.toString())
 	var string = decoder.write(data)
 	string=string.split(/\r?\n/)
 	for( var i = 0; i < string.length; i++) {

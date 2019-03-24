@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 
 b0 = 4
 b1 = 17
-b2 = 18
+b2 = 27
 
 GPIO.setmode(GPIO.BCM)
 

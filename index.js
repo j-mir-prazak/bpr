@@ -86,7 +86,7 @@ function buttonPressed(button, now) {
 
 }
 
-var current_volume = -4000
+var current_volume = -4200
 
 function volume(dir) {
 	var dir = dir || false

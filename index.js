@@ -177,14 +177,12 @@ function setupHandler(asset) {
 		}.bind(null,asset), 1000)
 	}
 	else {
+		console.log("internet connection. playing.")
 		setupPlayer(asset)
 	}
 }
 
 changeAsset()
-
-
-
 
 
 function py() {

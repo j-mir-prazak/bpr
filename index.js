@@ -110,7 +110,7 @@ function setupPlayer(asset) {
 
 	lock = false
 
-	player["player"] = omx('assets/' + assets[asset], "alsa:hw=1,O", false, current_volume)
+	player["player"] = omx('assets/' + assets[asset], "alsa:hw:1,O", false, current_volume)
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)

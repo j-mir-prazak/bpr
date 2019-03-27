@@ -34,8 +34,15 @@ function cleanPID(pid) {
 }
 
 
-var assets;
-assets = fs.readdirSync('assets')
+var assets = new Array(
+	"http://icecast7.play.cz/cro1-128.mp3",
+	"http://icecast6.play.cz/cro2-128.mp3",
+	"http://icecast5.play.cz/cro3-128.mp3",
+	"http://icecast1.play.cz/croplus128.mp3"
+
+
+);
+// assets = fs.readdirSync('assets')
 
 // fs.readdir('./assets', function(err, items) {
 //
@@ -109,7 +116,7 @@ function setupPlayer(asset) {
 	if ( asset === false ) return false
 
 
-	player["player"] = omx('assets/' + assets[asset], "alsa:hw:1", false, current_volume)
+	player["player"] = omx(assets[asset], "alsa:hw:1", false, current_volume)
 	var pid = player["player"].pid
 	pids.push(pid)
 	console.log(player["player"].pid)

@@ -71,7 +71,7 @@ var buttons_pressed = {
 
 function buttonPressed(button, now) {
 	var button = button || false
-	if (! button ) return false
+	if (! button OR lock == true ) return false
 	var now = now || Date.now()
 	if ( now - buttons_pressed["button1"] > 1000 && now - buttons_pressed[button] > 500 )
 		{

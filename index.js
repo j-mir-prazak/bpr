@@ -162,7 +162,10 @@ function cycleAssets() {
 }
 
 function changeAsset() {
-		if ( lock == true ) return false
+		if ( lock == true ) {
+			console.log("player locked")
+			return false
+		}
 		console.log("changeAsset")
 		var asset = cycleAssets()
 		lock = true

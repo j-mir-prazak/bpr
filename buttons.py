@@ -2,9 +2,7 @@
 from random import randint
 from time import sleep
 import sys
-from gpiozero import Button
 import RPi.GPIO as GPIO
-
 
 b0 = 4
 b1 = 17
@@ -31,6 +29,7 @@ button2 = 0
 
 while 1:
 
+
     if GPIO.input(b0):
         button0 = 1
 
@@ -48,6 +47,8 @@ while 1:
     button1 = 0
     button2 = 0
     sleep(0.01)
+
+
 
 
 

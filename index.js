@@ -135,7 +135,9 @@ function setupPlayer(asset) {
 					console.log("Current volume: " + current_volume)
 				}
 				else if (string[i].length > 0 && string[i].match(/Audio co/) ) {
-					setTimeout(function(lock = false), 1000);
+					setTimeout(function(){
+						lock = false
+					}, 1000);
 					console.log("player started playing")
 				}
 			}

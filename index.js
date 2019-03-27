@@ -128,6 +128,9 @@ function setupPlayer(asset) {
 					current_volume = vol
 					console.log("Current volume: " + current_volume)
 				}
+				else if (string[i].length > 0 && string[i].match(/Audio co/) ) {
+					console.log("player started playing")
+				}
 			}
 		});
 

@@ -108,7 +108,6 @@ function setupPlayer(asset) {
 	var asset = asset
 	if ( asset === false ) return false
 
-	lock = false
 
 	player["player"] = omx('assets/' + assets[asset], "alsa:hw:1", false, current_volume)
 	var pid = player["player"].pid
@@ -129,6 +128,7 @@ function setupPlayer(asset) {
 					console.log("Current volume: " + current_volume)
 				}
 				else if (string[i].length > 0 && string[i].match(/Audio co/) ) {
+					lock = false
 					console.log("player started playing")
 				}
 			}
@@ -146,7 +146,7 @@ function setupPlayer(asset) {
 	}
 
 	player["player"].on('close', function(pid) {
-
+		lock = false
 		console.log("playback ended")
 		cleanPID(pid)
 		setupHandler(current_asset)

@@ -137,7 +137,7 @@ function setupPlayer(asset) {
 				else if (string[i].length > 0 && string[i].match(/Audio co/) ) {
 					setTimeout(function(){
 						lock = false
-					}, 1000);
+					}, 2000);
 					console.log("player started playing")
 				}
 			}

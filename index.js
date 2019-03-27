@@ -101,11 +101,14 @@ function volume(dir) {
 
 var current_asset = 0
 var player = {}
+var lock = false
 
 function setupPlayer(asset) {
 
 	var asset = asset
 	if ( asset === false ) return false
+
+	lock = false
 
 	player["player"] = omx('assets/' + assets[asset], "local", false, current_volume)
 	var pid = player["player"].pid
@@ -143,7 +146,7 @@ function setupPlayer(asset) {
 
 		console.log("playback ended")
 		cleanPID(pid)
-		setupPlayer(current_asset)
+		setupHandler(current_asset)
 	}.bind(null, pid))
 
 }
@@ -156,11 +159,26 @@ function cycleAssets() {
 }
 
 function changeAsset() {
+		if ( lock == true ) return false
 		console.log("changeAsset")
 		var asset = cycleAssets()
+		lock = true
 		if( player["player"] && player["player"].open == true ) player["player"].quit()
-		else setupPlayer(asset)
+		else setupHandler(asset)
 
+}
+
+function setupHandler(asset) {
+	lock = true
+	if ( connection_check() == 1 ) {
+		console.log("no internet connection. waiting.")
+		setTimeout(function(asset) {
+			setupHandler(asset)
+		}.bind(null,asset), 1000)
+	}
+	else {
+		setupPlayer(asset)
+	}
 }
 
 changeAsset()
@@ -327,4 +345,27 @@ function setupJob(){
 		})
 		if ( queueRunning === false ) queueHandler()
 	});
+}
+
+
+// function connection_check() {
+// 	var cc = spawner.spawn("bash", new Array("-c", "./connection_check"), {detached: true})
+// 	var decoder = new StringDecoder('utf-8')
+//
+// 	pids.push(cc["pid"])
+//
+// 	cc.on('close', function (pid, code) {
+// 		cleanPID(pid)
+// 		if (code == 0) {
+// 			console.log("online")
+// 		}
+// 		else {
+// 			console.log("offline")
+// 		}
+// 	}.bind(null, cc["pid"]));
+// 	return cc;
+// }
+
+function connection_check() {
+	return spawner.spawnSync('bash', ['-c', './connection_check.sh']).status
 }

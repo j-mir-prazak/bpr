@@ -189,7 +189,7 @@ function setupHandler(asset) {
 		console.log("no internet connection. waiting.")
 		setTimeout(function(asset) {
 			setupHandler(asset)
-		}.bind(null,asset), 1000)
+		}.bind(null,asset), 500)
 	}
 	else {
 		console.log("internet connection. playing.")

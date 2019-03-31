@@ -201,7 +201,7 @@ changeAsset()
 
 
 function py() {
-	var py = spawner.spawn("bash", new Array("-c", "./fake_buttons.py"), {detached: true})
+	var py = spawner.spawn("bash", new Array("-c", "./buttons.py"), {detached: true})
 	var decoder = new StringDecoder('utf-8')
 
 	pids.push(py["pid"])

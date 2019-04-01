@@ -38,8 +38,12 @@ var assets = new Array(
 	"http://icecast7.play.cz/cro1-128.mp3",
 	"http://icecast6.play.cz/cro2-128.mp3",
 	"http://icecast5.play.cz/cro3-128.mp3",
-	"http://icecast1.play.cz/croplus128.mp3"
-
+	"http://icecast1.play.cz/croplus128.mp3",
+	"http://icecast6.play.cz/crowave-128.mp3",
+	"http://icecast5.play.cz/croddur-128.mp3",
+	"http://icecast1.play.cz/crojazz128.mp3",
+	"http://icecast5.play.cz/crojuniormaxi128.mp3",
+	"http://icecast7.play.cz/croretro128.mp3"
 
 );
 // assets = fs.readdirSync('assets')
@@ -81,11 +85,11 @@ function buttonPressed(button, now) {
 				console.log("changeButton")
 				changeAsset()
 			}
-			else if (button == "button0") {
+			else if (button == "button0" && current_volume > -4500) {
 				console.log("volumeDownButton")
 				volume("down")
 			}
-			else if (button == "button2") {
+			else if (button == "button2" && current_volume < 0) {
 				console.log("volumeUpButton")
 				volume("up")
 			}
